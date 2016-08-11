@@ -1,5 +1,3 @@
-require 'pry'
-binding.pry
 Facets.register(BuildHistoryFacet) do
   # extend_model PuppetHostExtensions
   # add_helper PuppetFacetHelper
