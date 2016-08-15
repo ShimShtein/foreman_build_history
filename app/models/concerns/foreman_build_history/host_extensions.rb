@@ -6,12 +6,21 @@ module ForemanBuildHistory
       # execute callbacks
       after_build :set_build_start
       before_provision :set_build_finish
+      before_save :build_history_handle_host_creation
+    end
+
+    def build_history_handle_host_creation
+      return unless build?
+
+      set_build_start
     end
 
     # create or overwrite instance methods...
     def set_build_start
-      # binding.pry
+      return if facet.build_started
+
       facet.build_started = Time.zone.now
+      facet.build_history_templates.delete_all
 
       facet.save unless facet.new_record?
     end

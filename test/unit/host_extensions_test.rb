@@ -1,7 +1,7 @@
 require 'test_plugin_helper'
 
 class BuildHistoryHostExtensionsTest < ActiveSupport::TestCase
-  test 'build start time is recorded' do
+  test 'build start time is recorded on rebuild' do
     host = FactoryGirl.create(:host, :managed, :build => false)
 
     host.build = true
@@ -17,5 +17,11 @@ class BuildHistoryHostExtensionsTest < ActiveSupport::TestCase
     host.save!
 
     assert_not_nil host.build_history_facet.build_finished
+  end
+
+  test 'build start time is recorded on first build' do
+    host = FactoryGirl.create(:host, :managed, :build => true)
+
+    assert_not_nil host.build_history_facet.build_started
   end
 end
