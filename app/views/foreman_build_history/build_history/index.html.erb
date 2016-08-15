@@ -1,0 +1,18 @@
+<% stylesheet 'timeline' %>
+
+<table class="<%= table_css_classes 'table-two-pane table-fixed' %>">
+  <thead>
+    <tr>
+      <th class="col-md-1"><%= s_("Host|Name") %></th>
+      <th class="col-md-5"><%= s_("Timeline") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @history_facets.each do |facet| %>
+    <tr>
+      <td><%= name_column(facet.host) %></td>
+      <td><%= render facet %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  get 'new_action', to: 'foreman_build_history/hosts#new_action'
+  get 'build_history', to: 'foreman_build_history/build_history#index'
 end

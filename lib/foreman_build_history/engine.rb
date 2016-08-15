@@ -22,7 +22,7 @@ module ForemanBuildHistory
 
         # Add permissions
         security_block :foreman_build_history do
-          permission :view_foreman_build_history, :'foreman_build_history/hosts' => [:new_action]
+          permission :view_foreman_build_history, :'foreman_build_history/build_history' => [:index]
         end
 
         # Add a new role called 'Discovery' if it doesn't exist
@@ -30,7 +30,7 @@ module ForemanBuildHistory
 
         # add menu entry
         menu :top_menu, :template,
-             url_hash: { controller: :'foreman_build_history/hosts', action: :new_action },
+             url_hash: { controller: :'foreman_build_history/build_history', action: :index },
              caption: 'ForemanBuildHistory',
              parent: :hosts_menu,
              after: :hosts
@@ -51,6 +51,7 @@ module ForemanBuildHistory
       end
     initializer 'foreman_build_history.assets.precompile' do |app|
       app.config.assets.precompile += assets_to_precompile
+      app.config.assets.precompile += %w( timeline.css )
     end
     initializer 'foreman_build_history.configure_assets', group: :assets do
       SETTINGS[:foreman_build_history] = { assets: { precompile: assets_to_precompile } }
@@ -61,6 +62,7 @@ module ForemanBuildHistory
       begin
         require File.expand_path('../facet', __FILE__)
         Host::Managed.send(:include, ForemanBuildHistory::HostExtensions)
+        UnattendedController.send(:include, ForemanBuildHistory::UnattendedControllerExtensions)
         HostsHelper.send(:include, ForemanBuildHistory::HostsHelperExtensions)
       rescue => e
         Rails.logger.warn "ForemanBuildHistory: skipping engine hook (#{e})"
