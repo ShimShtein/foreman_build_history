@@ -7,6 +7,7 @@ module ForemanBuildHistory
       after_build :set_build_start
       before_provision :set_build_finish
       before_save :build_history_handle_host_creation
+      has_one :build_history_facet, :foreign_key => 'host_id'
     end
 
     def build_history_handle_host_creation
