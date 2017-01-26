@@ -1,6 +1,8 @@
 # ForemanBuildHistory
 
-*Introdction here*
+An extension that tracks the process of host building.
+
+It registers build start and stop times and the times when a template was requested by the host.
 
 ## Installation
 
@@ -21,7 +23,7 @@ Fork and send a Pull Request. Thanks!
 
 ## Copyright
 
-Copyright (c) *year* *your name*
+Copyright (c) 2016 Shimon Shtein
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -35,4 +37,3 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
