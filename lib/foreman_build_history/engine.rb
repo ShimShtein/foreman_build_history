@@ -5,9 +5,7 @@ module ForemanBuildHistory
     engine_name 'foreman_build_history'
 
     config.autoload_paths += Dir["#{config.root}/app/controllers/concerns"]
-    config.autoload_paths += Dir["#{config.root}/app/helpers/concerns"]
     config.autoload_paths += Dir["#{config.root}/app/models/concerns"]
-    config.autoload_paths += Dir["#{config.root}/app/overrides"]
 
     # Add any db migrations
     initializer 'foreman_build_history.load_app_instance_data' do |app|
@@ -18,25 +16,22 @@ module ForemanBuildHistory
 
     initializer 'foreman_build_history.register_plugin', :before => :finisher_hook do |_app|
       Foreman::Plugin.register :foreman_build_history do
-        requires_foreman '>= 1.4'
+        requires_foreman '>= 1.12'
 
         # Add permissions
         security_block :foreman_build_history do
           permission :view_foreman_build_history, :'foreman_build_history/build_history' => [:index]
         end
 
-        # Add a new role called 'Discovery' if it doesn't exist
+        # Add a new role called 'ForemanBuildHistory' if it doesn't exist
         role 'ForemanBuildHistory', [:view_foreman_build_history]
 
         # add menu entry
         menu :top_menu, :template,
              url_hash: { controller: :'foreman_build_history/build_history', action: :index },
-             caption: 'ForemanBuildHistory',
-             parent: :hosts_menu,
-             after: :hosts
-
-        # add dashboard widget
-        widget 'foreman_build_history_widget', name: N_('Foreman plugin template widget'), sizex: 4, sizey: 1
+             caption: N_('Build history'),
+             parent: :monitor_menu,
+             after: :audits
       end
     end
 
@@ -63,15 +58,8 @@ module ForemanBuildHistory
         require File.expand_path('../facet', __FILE__)
         Host::Managed.send(:include, ForemanBuildHistory::HostExtensions)
         UnattendedController.send(:include, ForemanBuildHistory::UnattendedControllerExtensions)
-        HostsHelper.send(:include, ForemanBuildHistory::HostsHelperExtensions)
       rescue => e
         Rails.logger.warn "ForemanBuildHistory: skipping engine hook (#{e})"
-      end
-    end
-
-    rake_tasks do
-      Rake::Task['db:seed'].enhance do
-        ForemanBuildHistory::Engine.load_seed
       end
     end
 

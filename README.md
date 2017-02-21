@@ -2,10 +2,16 @@
 
 *Introdction here*
 
+## Compatibility
+
+| Foreman Version | Plugin Version |
+| --------------- | -------------- |
+| >= 1.12         | any            |
+
 ## Installation
 
-See [How_to_Install_a_Plugin](http://projects.theforeman.org/projects/foreman/wiki/How_to_Install_a_Plugin)
-for how to install Foreman plugins
+See [Plugins install instructions](https://theforeman.org/plugins/#2.3AdvancedInstallationfromGems)
+for how to install Foreman plugins.
 
 ## Usage
 
